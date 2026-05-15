@@ -25,7 +25,11 @@ class Product extends Model
 
     public function getImageUrlAttribute()
     {
-        return $this->image ? asset('storage/'.$this->image) : null;
+        if (! $this->image) {
+            return null;
+        }
+
+        return request()->getSchemeAndHttpHost().'/storage/'.$this->image;
     }
 
     public function user()

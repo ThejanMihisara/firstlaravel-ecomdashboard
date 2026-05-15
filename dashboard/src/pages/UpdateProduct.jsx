@@ -144,9 +144,14 @@ function UpdateProduct({ user }) {
           {products.map((product) => (
             <div key={product.id} className="list-group-item d-flex justify-content-between align-items-center">
               <div className="d-flex align-items-center gap-3">
-                {product.image_url && (
-                  <img src={product.image_url} alt={product.title} style={{ width: 80, height: 80, objectFit: 'cover', borderRadius: 8 }} />
-                )}
+                {product.image_url ? (
+                  <img 
+                    src={product.image_url.startsWith('http') ? product.image_url : `http://127.0.0.1:8000${product.image_url}`}
+                    alt={product.title} 
+                    style={{ width: 80, height: 80, objectFit: 'cover', borderRadius: 8 }} 
+                    onError={(e) => e.target.style.display = 'none'}
+                  />
+                ) : null}
                 <div>
                   <strong>{product.title}</strong>
                   <div className="small text-muted">Price: LKR {product.price}    Qty: {product.quantity}</div>
@@ -186,7 +191,12 @@ function UpdateProduct({ user }) {
           </div>
           {imagePreview && (
             <div className="mb-3">
-              <img src={imagePreview} alt="Preview" className="img-fluid rounded" style={{ maxHeight: '240px' }} />
+              <img 
+                src={imagePreview.startsWith('http') ? imagePreview : imagePreview.startsWith('blob:') ? imagePreview : `http://127.0.0.1:8000${imagePreview}`}
+                alt="Preview" 
+                className="img-fluid rounded" 
+                style={{ maxHeight: '240px' }} 
+              />
             </div>
           )}
           <button className="btn btn-success" onClick={updateProduct}>Update Product</button>

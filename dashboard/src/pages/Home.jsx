@@ -45,18 +45,22 @@ function Home({ user }) {
             {products.map(product => (
               <div key={product.id} className="col-lg-4 col-md-6">
                 <div className="product-card card h-100 border-0 shadow-sm transition-all">
-                  <div className="product-image-wrapper position-relative overflow-hidden">
-                    {product.image_url && (
+                  <div className="product-image-wrapper position-relative overflow-hidden bg-light">
+                    {product.image_url ? (
                       <img 
-                        src={product.image_url} 
+                        src={product.image_url.startsWith('http') ? product.image_url : `http://127.0.0.1:8000${product.image_url}`}
                         className="card-img-top" 
                         alt={product.title}
                         style={{ height: '320px', objectFit: 'cover', width: '100%' }}
                         onError={(e) => {
                           console.error('Image failed to load:', e.target.src);
-                          e.target.style.display = 'none';
+                          e.target.alt = 'Image not available';
                         }}
                       />
+                    ) : (
+                      <div style={{ height: '320px', background: '#e9ecef', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                        <span className="text-muted">No Image</span>
+                      </div>
                     )}
                   </div>
                   
